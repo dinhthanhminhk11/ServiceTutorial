@@ -3,6 +3,7 @@ package com.example.servicetutorial;
 import static com.example.servicetutorial.MyApplication.CHANNEL_ID;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -35,9 +36,14 @@ public class MyService extends Service {
     }
 
     private void senNotification(String text) {
-        Notification notification = new NotificationCompat.Builder(this , CHANNEL_ID)
-                .setContentTitle("Title Notition service")
-                .build();
+        Intent intent = new Intent(this, MainActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle("Title Notition service").setContentText("text").setSmallIcon(R.mipmap.ic_launcher).setContentIntent(pendingIntent).build();
+
+        //không có hàm này thì sẽ chạy 1 phút rồi tự ngừng
+        startForeground(1, notification);
 
     }
 
